@@ -1,11 +1,19 @@
 
-Usage:
+## Setup:
 
-Clone `bpRNA` from https://github.com/hendrixlab/bpRNA.
+1. Clone `bpRNA` from https://github.com/hendrixlab/bpRNA.
 
-add to arnie file:
+1b. May need to install perl package `Graph`: if not installed, will get an error like `Can't locate Graph.pm in @INC`.
+
+Sherlock: `ml perl; cpanm Graph`.
+
+Otherwise, something like `sudo cpan install Graph`.
+
+2. Add to arnie file:
 
 `bprna: /path/to/bpRNA`
+
+## Usage:
 
 \[Update for Nov 2020 OpenVaccine work\]: DegScore class uses Arnie to calculate an MFE structure that is then used with bpRNA to compute loop type string.
 DEFAULT setting is LinearFold-E (LinearFold with EternaFold) to mimic DegScore 2.1 calculation.

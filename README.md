@@ -3,14 +3,15 @@
 
 1. Clone `bpRNA` from https://github.com/hendrixlab/bpRNA.
 
-2. May need to install perl package `Graph`: if not installed, will get an error like `Can't locate Graph.pm in @INC`.
+2. Add to arnie file:
 
-Sherlock: Run `ml perl; cpanm Graph`.
-Otherwise, something like `sudo cpan install Graph`.
+  `bprna: /path/to/bpRNA`
 
-3. Add to arnie file:
+3. May need to install perl package `Graph`: if not installed, will get an error like `Can't locate Graph.pm in @INC`.
 
-`bprna: /path/to/bpRNA`
+  Sherlock: Run `ml perl; cpanm Graph`.
+  Otherwise, something like `sudo cpan install Graph`.
+
 
 ## Usage:
 

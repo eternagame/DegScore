@@ -3,20 +3,22 @@
 
 1. Clone `bpRNA` from https://github.com/hendrixlab/bpRNA.
 
-1b. May need to install perl package `Graph`: if not installed, will get an error like `Can't locate Graph.pm in @INC`.
+2. May need to install perl package `Graph`: if not installed, will get an error like `Can't locate Graph.pm in @INC`.
 
-Sherlock: `ml perl; cpanm Graph`.
-
+Sherlock: Run `ml perl; cpanm Graph`.
 Otherwise, something like `sudo cpan install Graph`.
 
-2. Add to arnie file:
+3. Add to arnie file:
 
 `bprna: /path/to/bpRNA`
 
 ## Usage:
 
-\[Update for Nov 2020 OpenVaccine work\]: DegScore class uses Arnie to calculate an MFE structure that is then used with bpRNA to compute loop type string.
-DEFAULT setting is LinearFold-E (LinearFold with EternaFold) to mimic DegScore 2.1 calculation.
+\[Update for Nov 2020 OpenVaccine work\]:
+
+The DegScore class uses Arnie to calculate an MFE structure, which is then used with bpRNA to compute the loop type string (`bprna_string`).
+
+The DEFAULT setting in this class is LinearFold-E (LinearFold with EternaFold) to mimic DegScore 2.1 calculation. This requires having successfully set up arnie with LinearFold-E.
 
 Example syntax:
 
@@ -44,7 +46,19 @@ Total degscore:
 3.421000000000001
 ```
 
-To change from these default LinearFold-E settings for MFE calculation to other Arnie settings (say, ViennaRNA):
+To change from these default LinearFold-E settings for MFE calculation to other Arnie settings:
+
+ViennaRNA:
 ```
 mdl = DegScore(sequence, package='vienna', linear=False)
+```
+
+LinearFold-V:
+```
+mdl = DegScore(sequence, package='vienna', linear=True)
+
+```
+Eternafold:
+```
+mdl = DegScore(sequence, package='eternafold', linear=False)
 ```

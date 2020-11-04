@@ -7,8 +7,9 @@ add to arnie file:
 
 `bprna: /path/to/bpRNA`
 
-\[Nov 2020\]: Uses Arnie to calculate an MFE structure that is then used with bpRNA to compute loop type string.
-DEFAULT setting is LinearFold-E (LinearFold with EternaFold) to mimic DegScore 2.1 calculation 
+\[Update for Nov 2020 OpenVaccine work\]: DegScore class uses Arnie to calculate an MFE structure that is then used with bpRNA to compute loop type string.
+DEFAULT setting is LinearFold-E (LinearFold with EternaFold) to mimic DegScore 2.1 calculation.
+
 Example syntax:
 
 ```
@@ -35,8 +36,7 @@ Total degscore:
 3.421000000000001
 ```
 
-To change from default Eterna settings for MFE calculation to other Arnie settings (say, ViennaRNA):
+To change from these default LinearFold-E settings for MFE calculation to other Arnie settings (say, ViennaRNA):
 ```
-sequence='GGGGAAACCCC'
 mdl = DegScore(sequence, package='vienna', linear=False)
 ```

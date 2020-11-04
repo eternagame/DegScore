@@ -12,6 +12,30 @@ bprna: /path/to/bpRNA
 bprna is cloned from https://github.com/hendrixlab/bpRNA.
 '''
 
+coeffs = [-0.020, -0.027, -0.026, -0.017, 0.005, 0.000, 0.005, -0.006, -0.011, 0.006, 0.031,
+ 0.021, 0.036, 0.034, 0.026, -0.024, -0.005, 0.028, -0.022, -0.015, -0.043, -0.043, -0.029, -0.026,
+  0.016, -0.077, -0.001, -0.016, 0.031, -0.001, 0.064, 0.065, 0.064, 0.069, 0.029, 0.044, -0.003,
+  0.012, -0.006, -0.004, -0.072, -0.066, -0.061, -0.065, 0.014, 0.037, 0.051, 0.017, 0.054, 0.037,
+ -0.065, -0.068, -0.058, -0.041, -0.014, 0.075, -0.007, 0.005, -0.010, -0.006, 0.009, 0.014, 0.019,
+  0.037, 0.005, -0.097, 0.013, -0.005, 0.001, 0.002, -0.026, -0.026, -0.036, -0.008, 0.041, 0.067, 0.017,
+   0.007, 0.034, 0.028, -0.077, -0.079, -0.092, -0.064, 0.012, 0.022, 0.041, 0.041, 0.057, 0.038, 0.010,
+    0.017, -0.004, 0.050, -0.018, -0.144, -0.001, 0.009, 0.013, -0.017, -0.012, -0.019, -0.047, -0.032,
+     0.124, 0.164, 0.089, 0.063, 0.076, 0.055, 0.012, 0.021, -0.038, -0.050, 0.014, -0.044, -0.023,
+      -0.015, -0.037, -0.059, -0.027, 0.042, 0.003, -0.017, -0.090, -0.057, -0.140, -0.005, -0.031,
+ -0.256, -0.353, -0.178, -0.503, -0.506, -0.090, -0.058, -0.032, -0.035, 0.015, -0.070,
+0.048, 0.002, -0.071, 0.005, -0.002, 0.024, 0.000, -0.007, -0.014, -0.029, 0.033, 0.011,
+ 0.006, -0.039, -0.023, 0.046, 0.009, 0.009, 0.003, -0.002, 0.015, 0.022, 0.007, 0.015,
+  -0.003, -0.121, -0.014, -0.021, -0.016, -0.010, -0.046, -0.059, -0.031, -0.013, 0.005,
+   0.051, -0.006, 0.003, 0.009, -0.006, 0.001, 0.021, 0.025, 0.017, 0.012, 0.033, -0.003,
+-0.030, 0.002, 0.008, -0.003, -0.001, 0.003, 0.007, 0.004, -0.099, -0.003, 0.006,
+ -0.018, -0.002, -0.018, -0.023, -0.016, -0.008, -0.013, -0.027, -0.006, 0.005,
+  0.011, -0.001, 0.035, 0.024, 0.042, 0.040, -0.010, 0.270, 0.006, -0.040, -0.001,
+  -0.012, -0.042, -0.040, -0.015, -0.021, 0.008, -0.294, -0.005, -0.008, 0.001,
+ -0.014, -0.037, -0.047, -0.034, -0.028, 0.025, 0.144, 0.016, 0.023, 0.026, 0.015,
+  0.014, 0.009, 0.020, 0.031, 0.026, -0.096, 0.002, -0.012, 0.030, 0.000]
+
+
+
 def encode_input(sequence, bprna_string, window_size=12, pad=0, seq=True, struct=True):
     '''Creat input/output for regression model for predicting structure probing data.
     Inputs:
@@ -94,8 +118,8 @@ class DegScore():
 
         # old weights from DegScore 1
         #self.weights = {'H':0.7, 'E':1.0, 'S':0.0, 'I':0.2, 'B': 0.8, 'M': 0.6}
-        self.coeffs_ = np.loadtxt('DegScore2.1_coeffs.txt',usecols=1)
-        self.intercept_ = 1.1220380163671115
+        self.coeffs_ =  coeffs #np.loadtxt('DegScore2.1_coeffs.txt',usecols=1)
+        self.intercept_ = 1.122
 
         _ = write([sequence, self.structure],fname=fname)
         LOC=package_locs['bprna']
@@ -116,18 +140,19 @@ class DegScore():
             self.bprna_string = f.readlines()[5].strip()
 
         self.bprna_string = self.bprna_string.replace('X','E')
-        print(self.bprna_string)
+
+        if DEBUG: print(self.bprna_string)
 
         self.encoding_ = encode_input(self.sequence, self.bprna_string)
 
-        print(self.encoding_.shape)
+        if DEBUG: print("encoding shape", self.encoding_.shape)
 
         self.degscore_by_position = np.sum(self.encoding_ * self.coeffs_, axis=1) + self.intercept_
         self.degscore = np.sum(self.degscore_by_position)
 
         os.remove(fname)
         os.remove(os.path.basename(fname).replace('dbn','st'))
-        
+
         # counter = Counter(bprna_string)
         # self.bprna_string = bprna_string
         # self.counts = {}

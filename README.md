@@ -12,20 +12,20 @@ Example syntax:
 
 ```
 from DegScore import DegScore
-seq='GGGGAAAACCCC'
-struct = '((((....))))'
-mdl = DegScore(seq, struct)
-print(mdl.counts)
-print(mdl.score)
-print(mdl.weights)
-mdl.set_weights({'H': 1, 'E': 1, 'S': 1, 'I': 1, 'B': 1, 'M': 1})
-print(mdl.score)
+
+sequence='GGGGAAACCCC'
+
+mdl = DegScore(sequence)
+print('Predicted degscore per nucleotide:')
+print(mdl.degscore_by_position)
+print('Total degscore:')
+print(mdl.degscore)
 ```
 
 Output:
 ```
-{'H': 4, 'E': 0, 'S': 8, 'I': 0, 'B': 0, 'M': 0} # mdl.counts
-2.8 # mdl.score
-{'H': 0.7, 'E': 1.0, 'S': 0.0, 'I': 0.2, 'B': 0.8, 'M': 0.6} # current mdl.weights
-12 #updated mdl.score
+Predicted degscore per nucleotide:
+[0.173 0.129 0.277 0.388 0.414 0.434 0.445 0.233 0.104 0.122 0.702]
+Total degscore:
+3.421000000000001
 ```

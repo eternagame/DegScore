@@ -99,7 +99,7 @@ def encode_input(sequence, bprna_string, window_size=12, pad=0, seq=True, struct
 
 
 class DegScore():
-    def __init__(self, sequence, package='eternafold', linear=True):
+    def __init__(self, sequence, structure=None, package='eternafold', linear=True):
         '''Class to handle DegScore information.
         Initialize by providing sequence and structure.
         Uses bpRNA to handle structure parsing.
@@ -111,7 +111,11 @@ class DegScore():
 		set_weights(weight_dictionary): update weights and re-score without re-running bpRNA.
         '''
         self.sequence = sequence
-        self.structure = mfe(sequence, package=package, linear=linear)
+        if structure is not None:
+            self.structure = structure
+        else:
+            self.structure = mfe(sequence, package=package, linear=linear)
+            
         assert len(sequence) == len(self.structure)
 
         fname = "%s.dbn" % filename()

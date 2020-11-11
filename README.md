@@ -14,6 +14,9 @@
 
 
 ## Usage:
+Update Nov 10:
+
+No longer using LinearFold-E, uses just plain EternaFold now.
 
 \[Update for Nov 2020 OpenVaccine work\]:
 

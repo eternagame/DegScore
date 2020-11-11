@@ -99,7 +99,7 @@ def encode_input(sequence, bprna_string, window_size=12, pad=0, seq=True, struct
 
 
 class DegScore():
-    def __init__(self, sequence, structure=None, package='eternafold', linear=True):
+    def __init__(self, sequence, structure=None, package='eternafold', linear=False):
         '''Class to handle DegScore information.
         Initialize by providing sequence and structure.
         Uses bpRNA to handle structure parsing.

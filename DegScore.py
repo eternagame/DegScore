@@ -114,7 +114,7 @@ class DegScore():
         if structure is not None:
             self.structure = structure
         else:
-            self.structure = mfe(sequence, package=package, linear=linear)
+            self.structure = mfe(sequence, package=package, linear=linear, viterbi=True)
             
         assert len(sequence) == len(self.structure)
 

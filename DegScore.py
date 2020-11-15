@@ -155,7 +155,7 @@ class DegScore():
         self.degscore = np.sum(self.degscore_by_position)
 
         os.remove(fname)
-        os.remove(os.path.basename(fname).replace('dbn','st'))
+        os.remove(os.path.basename(fname).replace('.dbn','.st'))
 
         # counter = Counter(bprna_string)
         # self.bprna_string = bprna_string

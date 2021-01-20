@@ -1,17 +1,12 @@
 
 ## Setup:
 
-1. Clone `bpRNA` from https://github.com/hendrixlab/bpRNA.
+Add to python path in .bashrc, or in python code with 
+```
+sys.path.append('/path/to/arnie-deg')
+```
 
-2. Add to arnie file:
-
-  `bprna: /path/to/bpRNA`
-
-3. May need to install perl package `Graph`: if not installed, will get an error like `Can't locate Graph.pm in @INC`.
-
-  Sherlock: Run `ml perl; cpanm Graph`.
-  Otherwise, something like `sudo cpan install Graph`.
-
+Jan 2021 update: no longer dependent on bpRNA, gets loop assignments natively now.
 
 ## Usage:
 Update Nov 10:

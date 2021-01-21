@@ -1,9 +1,11 @@
 
+Repo to contain scripts and coefficients related to DegScore, a ridge regression model trained on Eterna Roll-Your-Own structure data to predict degradation.
+
 ## Setup:
 
 Add to python path in .bashrc, or in python code with 
 ```
-sys.path.append('/path/to/arnie-deg')
+sys.path.append('/path/to/DegScore')
 ```
 
 Jan 2021 update: no longer dependent on bpRNA, gets loop assignments natively now.

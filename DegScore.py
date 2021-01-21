@@ -9,7 +9,7 @@ package_locs = load_package_locations()
 from assign_loop_type import write_loop_assignments
 DEBUG=False
 
-coeffs = [-0.020, -0.027, -0.026, -0.017, 0.005, 0.000, 0.005, -0.006, -0.011, 0.006, 0.031,
+coeffs_2_1 = [-0.020, -0.027, -0.026, -0.017, 0.005, 0.000, 0.005, -0.006, -0.011, 0.006, 0.031,
  0.021, 0.036, 0.034, 0.026, -0.024, -0.005, 0.028, -0.022, -0.015, -0.043, -0.043, -0.029, -0.026,
   0.016, -0.077, -0.001, -0.016, 0.031, -0.001, 0.064, 0.065, 0.064, 0.069, 0.029, 0.044, -0.003,
   0.012, -0.006, -0.004, -0.072, -0.066, -0.061, -0.065, 0.014, 0.037, 0.051, 0.017, 0.054, 0.037,
@@ -95,7 +95,7 @@ def encode_input(sequence, bprna_string, window_size=12, pad=0, seq=True, struct
     return np.array(inpts)
 
 class DegScore():
-    def __init__(self, sequence, structure=None, package='eternafold', linear=False):
+    def __init__(self, sequence, structure=None, package='eternafold', linear=False, coeffs=None, intercept=None):
         '''Class to calculate DegScore-2.1, a ridge regression model to predict degradation.
         H Wayment-Steele, 2020.
 
@@ -103,6 +103,8 @@ class DegScore():
         sequence (str): RNA sequence
         structure (str) (optional): RNA dot-bracket structure. If not provided and arnie is connected,
         will re-calculate based provided 'package' and 'linear' keywords.
+        coeffs (list) (optional): coefficients from Ridge regression. If none given, DegScore 2.1 coeffs will be used.
+        intercept (float) (optional): intercept from Ridge regression. If none given, DegScore 2.1 intercept will be used.
 
         Attributes:
         bprna_string (str): loop assignments:
@@ -124,8 +126,14 @@ class DegScore():
 
         self.bprna_string = write_loop_assignments(self.structure)
 
-        self.coeffs_ =  coeffs
-        self.intercept_ = 1.122
+        if coeffs is None:
+            self.coeffs_ =  coeffs_2_1
+        else:
+            self.coeffs_ = coeffs
+        if intercept is None:
+            self.intercept_ = 1.122
+        else:
+            self.intercept_ = intercept
 
         if DEBUG: print(self.bprna_string)
 

@@ -1,5 +1,11 @@
 
-Repo to contain scripts and coefficients related to DegScore, a ridge regression model trained on Eterna Roll-Your-Own structure data to predict degradation.
+The DegScore model is a ridge regression trained on Eterna Roll-Your-Own structure data to predict RNA degradation.
+
+Authors:
+
+Hannah Wayment-Steele
+
+Biruk Abreha
 
 ## Setup:
 

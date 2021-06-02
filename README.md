@@ -1,6 +1,11 @@
 
 The DegScore model is a ridge regression trained on Eterna Roll-Your-Own structure data to predict RNA degradation.
 
+Citation: Leppek, K., Byeon, G.W., Kladwang, W., Wayment-Steele, H.K., Kerr, C., ... Barna, M., Das, R. (2021). Combinatorial optimization of mRNA structure, stability, and translation for RNA-based therapeutics. https://www.biorxiv.org/content/10.1101/2021.03.29.437587v1.
+
+<img src="degscore_schematic.png" alt="Schematic of degscore features and window." width="800"/>
+
+
 Authors:
 
 Hannah Wayment-Steele

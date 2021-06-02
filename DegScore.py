@@ -1,10 +1,11 @@
-from arnie.utils import load_package_locations
 import numpy as np
-from collections import Counter
-from arnie.mfe import mfe
 import sys, os
 
-package_locs = load_package_locations()
+try:
+    from arnie.mfe import mfe                   
+except ImportError:
+    print('Warning: could not find Arnie for DegScore structure prediction.\n\
+        Secondary structures must be input in DegScore class.')
 
 from assign_loop_type import write_loop_assignments
 DEBUG=False
@@ -31,7 +32,7 @@ coeffs_2_1 = [-0.020, -0.027, -0.026, -0.017, 0.005, 0.000, 0.005, -0.006, -0.01
  -0.014, -0.037, -0.047, -0.034, -0.028, 0.025, 0.144, 0.016, 0.023, 0.026, 0.015,
   0.014, 0.009, 0.020, 0.031, 0.026, -0.096, 0.002, -0.012, 0.030, 0.000]
 
-
+k_deg_m, k_deg_b = 0.002170959651184987, 0.05220886935630193
 
 def encode_input(sequence, bprna_string, window_size=12, pad=0, seq=True, struct=True):
     '''Creat input/output for regression model for predicting structure probing data.
@@ -50,7 +51,6 @@ def encode_input(sequence, bprna_string, window_size=12, pad=0, seq=True, struct
     '''
 
     assert len(sequence) == len(bprna_string)
-    MAX_LEN = 1588
 
     feature_kernel=[]
     if seq:
@@ -94,26 +94,43 @@ def encode_input(sequence, bprna_string, window_size=12, pad=0, seq=True, struct
             
     return np.array(inpts)
 
+def create_U_mask(seq):
+    mask=[]
+    for i, x in enumerate(list(seq)):
+        if x!='U':
+            mask.append(i)
+    return np.array(mask)
+
 class DegScore():
-    def __init__(self, sequence, structure=None, package='eternafold', linear=False, coeffs=None, intercept=None):
+    def __init__(self, sequence, structure=None, mask_U=False, package='eternafold',
+        start_ind=None, end_ind=None, linear=False, coefficients=None, intercept=None):
         '''Class to calculate DegScore-2.1, a ridge regression model to predict degradation.
-        H Wayment-Steele, 2020.
+        H Wayment-Steele, 2020/2021.
 
         Inputs:
         sequence (str): RNA sequence
-        structure (str) (optional): RNA dot-bracket structure. If not provided and arnie is connected,
+        structure (str): RNA dot-bracket structure. If not provided and Arnie is provided,
         will re-calculate based provided 'package' and 'linear' keywords.
-        coeffs (list) (optional): coefficients from Ridge regression. If none given, DegScore 2.1 coeffs will be used.
-        intercept (float) (optional): intercept from Ridge regression. If none given, DegScore 2.1 intercept will be used.
+        mask_U (bool, default False): If True, sets U positions to zero to mimic pseudouridine stabilization.
+        start_ind: starting position to sum degscore (default 0).
+        end_ind: ending position to sum degscore (defuault len(sequence)).
+
+        Structure prediction options:
+        package: package to use to calculate MFE secondary structure (example options in Arnie: 'vienna', 'eternafold')
+        linear (bool): Use linearfold calculation (must be set up in Arnie.)
+
+        Regression options:
+        coefficients (list) (optional): coefficients from Ridge regression. Default is DegScore 2.1 coefficients.
+        intercept (float) (optional): intercept from Ridge regression. Default is DegScore 2.1 intercept.
 
         Attributes:
-        bprna_string (str): loop assignments:
-                    H: Hairpin, E: External, S: Stem, I: Internal, B: Bulge, M: Multiloop		
+        loop_assignments (str): loop assignments:
+                    H: Hairpin, E: External, S: Stem, I: Internal, B: Bulge, M: Multiloop	
+
 		degscore: DegScore (float), summed across all nucleotides.
         degscore_by_position (vector): DegScore at each position.
-
-        coeffs_: DegScore-2.1 coefficients.
-        intercept_: DegScore-2.1 intercept.
+        est_k_deg (float): Estimated degradation rate (hrs^-1).
+        est_half_life (float): Estimated half life (hrs).
 
         '''
         self.sequence = sequence
@@ -124,12 +141,12 @@ class DegScore():
 
         assert len(self.sequence) == len(self.structure)
 
-        self.bprna_string = write_loop_assignments(self.structure)
+        self.loop_assignments = write_loop_assignments(self.structure)
 
-        if coeffs is None:
-            self.coeffs_ =  coeffs_2_1
+        if coefficients is None:
+            self.coefficients_ =  coeffs_2_1
         else:
-            self.coeffs_ = coeffs
+            self.coefficients_ = coefficients
         if intercept is None:
             self.intercept_ = 1.122
         else:
@@ -137,9 +154,26 @@ class DegScore():
 
         if DEBUG: print(self.bprna_string)
 
-        self.encoding_ = encode_input(self.sequence, self.bprna_string)
+        self.encoding_ = encode_input(self.sequence, self.loop_assignments)
 
         if DEBUG: print("encoding shape", self.encoding_.shape)
 
-        self.degscore_by_position = np.sum(self.encoding_ * self.coeffs_, axis=1) + self.intercept_
-        self.degscore = np.sum(self.degscore_by_position)
+        self.degscore_by_position = np.sum(self.encoding_ * self.coefficients_, axis=1) + self.intercept_
+
+        if mask_U:
+            mask_inds = create_U_mask(self.sequence)
+
+            mask = np.ones(self.degscore_by_position.size, dtype=bool)
+            mask[mask_inds] = False
+            self.degscore_by_position[mask] = 0
+
+        if start_ind is None:
+            start_ind = 0
+        if end_ind is None:
+            end_ind = len(sequence)
+
+        self.degscore = np.sum([self.degscore_by_position[x] for x in range(start_ind, end_ind)])
+
+        self.est_k_deg = k_deg_m*self.degscore + k_deg_b
+
+        self.est_half_life = np.log(2)/self.est_k_deg

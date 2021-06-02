@@ -2,7 +2,9 @@
 Repo to contain scripts and coefficients related to DegScore, a ridge regression model trained on Eterna Roll-Your-Own structure data to predict degradation.
 
 Authors:
+
 Hannah Wayment-Steele
+
 Biruk Abreha
 
 ## Setup:

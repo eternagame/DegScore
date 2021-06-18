@@ -39,10 +39,15 @@ Output:
 11.430771365678682
 ```
 
-## Data Source
+## Data Sources
 
-Raw data from In-line-seq: https://rmdb.stanford.edu/detail/RYOS1_MGPH_0000
-Raw data from structure mapping: https://rmdb.stanford.edu/detail/SHAPE_RYOS_0620
+| Experiment  | Data Repository |
+| ----------- | ----------- |
+| pH 10, Mg2+=10 mM, 24˚C, 1 day | https://rmdb.stanford.edu/detail/RYOS1_MGPH_0000 |
+| pH 10, Mg2+=0 mM, 24˚C, 7 days | https://rmdb.stanford.edu/detail/RYOS1_PH10_0000 |
+| pH 7.2, Mg2+=10 mM, 50˚C, 1 day | https://rmdb.stanford.edu/detail/RYOS1_MG50_0000 |
+| pH 7.2, Mg2+=0 mM, 50˚C, 7 days | https://rmdb.stanford.edu/detail/RYOS1_50C_0000 |
+| SHAPE structure mapping   | https://rmdb.stanford.edu/detail/SHAPE_RYOS_0620  |
 
 Kaggle competition for degradation prediction, which used the same training/test dataset: https://www.kaggle.com/c/stanford-covid-vaccine
 

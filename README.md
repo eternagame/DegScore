@@ -39,6 +39,13 @@ Output:
 11.430771365678682
 ```
 
+## Data Source
+
+Raw data from In-line-seq: https://rmdb.stanford.edu/detail/RYOS1_MGPH_0000
+Raw data from structure mapping: https://rmdb.stanford.edu/detail/SHAPE_RYOS_0620
+
+Kaggle competition for degradation prediction, which used the same training/test dataset: https://www.kaggle.com/c/stanford-covid-vaccine
+
 ## To learn more
 
 For more details on usage, and how degradation rate and half life are estimated from DegScore, see `Demo/Degscore_demo.ipynb`.

@@ -6,11 +6,16 @@ Citation: Leppek, K., Byeon, G.W., Kladwang, W., Wayment-Steele, H.K., Kerr, C.,
 <img src="degscore_schematic.png" alt="Schematic of degscore features and window." width="800"/>
 
 
-Authors:
 
-Hannah Wayment-Steele
+If you find this code useful, please cite
 
-Biruk Abreha
+```
+Wayment-Steele, H. DegScore. (2022) Zenodo. https://zenodo.org/badge/latestdoi/280538188
+
+```
+
+[![DOI](https://zenodo.org/badge/280538188.svg)](https://zenodo.org/badge/latestdoi/280538188)
+
 
 ## Setup:
 

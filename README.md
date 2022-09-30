@@ -10,7 +10,7 @@ Citation: Leppek, K., Byeon, G.W., Kladwang, W., Wayment-Steele, H.K., Kerr, C.,
 If you find this code useful, please cite
 
 ```
-Wayment-Steele, H. DegScore. (2022) Zenodo. https://zenodo.org/badge/latestdoi/280538188
+Wayment-Steele, H., Kim., D.S. DegScore. (2022) Zenodo. https://doi.org/10.5281/zenodo.7130659
 
 ```
 
